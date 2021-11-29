@@ -5,6 +5,8 @@ import org.fpm.di.Environment;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
@@ -17,7 +19,11 @@ public class Example {
         Environment env = new DummyEnvironment();
         container = env.configure(new MyConfiguration());
     }
-
+    @Test
+    public void myTest() {
+        container.printLists();
+        System.out.println(container.getComponent(B.class));
+    }
     @Test
     public void shouldInjectSingleton() {
         assertSame(container.getComponent(MySingleton.class), container.getComponent(MySingleton.class));

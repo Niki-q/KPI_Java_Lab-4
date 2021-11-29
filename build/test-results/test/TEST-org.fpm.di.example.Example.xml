@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.fpm.di.example.Example" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-11-29T17:52:19" hostname="DESKTOP-76DF0OB" time="0.013">
+  <properties/>
+  <testcase name="shouldBuildInjectDependencies" classname="org.fpm.di.example.Example" time="0.013"/>
+  <system-out><![CDATA[public org.fpm.di.example.UseA(org.fpm.di.example.A)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
