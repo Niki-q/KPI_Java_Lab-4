@@ -20,11 +20,6 @@ public class Example {
         container = env.configure(new MyConfiguration());
     }
     @Test
-    public void myTest() {
-        container.printLists();
-        System.out.println(container.getComponent(B.class));
-    }
-    @Test
     public void shouldInjectSingleton() {
         assertSame(container.getComponent(MySingleton.class), container.getComponent(MySingleton.class));
     }

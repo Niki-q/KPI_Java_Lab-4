@@ -1,18 +1,11 @@
 package org.fpm.di.example;
-
 import org.fpm.di.Container;
 
 import javax.inject.Singleton;
 import javax.inject.Inject;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.junit.Assert.assertSame;
+import java.util.*;
 
 public class DummyContainer implements Container {
     public Map<Class, Class> ClassList;
@@ -36,14 +29,43 @@ public class DummyContainer implements Container {
         }
         return false;
     }
-    <T> Constructor<?> getConstructorInject(Class<T> clazz){
+    <T> List<Constructor<?>> getConstructorsInject(Class<T> clazz){
+        List<Constructor<?>> list = new LinkedList<>();
         Constructor<?>[] constructors = clazz.getConstructors();
-        Constructor<?> chosen_constructor = constructors[0];
         for (Constructor<?> constructor : constructors){
             if (constructor.isAnnotationPresent(Inject.class))
-                chosen_constructor = constructor;
+                 list.add(constructor);
         }
-        return chosen_constructor;
+        if (list.size()>1)
+            list = sortListOfConstructors(list);
+        list.add(constructors[0]);
+        return list;
+    }
+    <T> List<Constructor<?>> sortListOfConstructors(List<Constructor<?>> list){
+        boolean isSorted = false;
+        while (!isSorted){
+            isSorted = true;
+            for (int i = 0; i <= list.size()-2; i++){
+                if (list.get(i).getParameterCount() < list.get(i+1).getParameterCount()){
+                    isSorted = false;
+                    Constructor<?> buff = list.get(i);
+                    list.set(i,list.get(i+1));
+                    list.set(i+1,buff);
+                }
+            }
+        }
+        return list;
+    }
+    <T> T getInstanceOfInjectConstructor(Class<T> ourclazz, Constructor<?> constructor) throws InvocationTargetException, InstantiationException, IllegalAccessException {
+        List<Object> arguments = new ArrayList<>();
+        for (int i =0; i<= constructor.getParameterCount()-1; i++){
+            arguments.add(getComponent(constructor.getParameterTypes()[i]));
+        }
+        T instance = ourclazz.cast(
+                constructor.newInstance(arguments.toArray())
+        );
+        InstanceList.put(ourclazz, instance);
+        return instance;
     }
     @Override
     public <T> void createBin(Class<T> clazz){
@@ -82,16 +104,11 @@ public class DummyContainer implements Container {
                     return instance;
                 }
                 if (isClassConstructorHaveAnnotationInject(ourclazz)) {
-                    System.out.println(getConstructorInject(ourclazz));
-                    T instance = ourclazz.cast(
-                            getConstructorInject(ourclazz)
-                            .newInstance(
-                                    getComponent(getConstructorInject(ourclazz)
-                                            .getParameterTypes()[0])
-                            )
-                    );
-                    InstanceList.put(ourclazz, instance);
-                    return instance;
+                    for (Constructor<?> constructor : getConstructorsInject(ourclazz)) {
+                        try {
+                            return getInstanceOfInjectConstructor(ourclazz, constructor);
+                        } catch (Exception ignored) {}
+                    }
                 }
                 else {
                     return ourclazz.cast(ourclazz.getConstructor().newInstance());
@@ -102,7 +119,7 @@ public class DummyContainer implements Container {
 
         }
         throw new IllegalArgumentException("A class value was entered that was not specified in the configuration");
-    }
+    }// Ошибка на приватные констукторы
 
 //
 //    public Map<Class, Object> SingletonInstance;
@@ -142,3 +159,5 @@ public class DummyContainer implements Container {
  Если этой аннотации нет - создаём объект класса и не добавляем его никуда, выводим его
  Если аннотация есть - то создаём объект по заданному конструктору и проверить есть ли такие еще
  */
+
+
