@@ -115,11 +115,30 @@ public class DummyContainer implements Container {
                 }
             }
         }
-        catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException ignored){
-
+        catch (IllegalAccessException e){
+            String comment = "It is not possible to get access to the class constructor, perhaps the constructor has a non-public access modifier";
+            printPersonalException(e,comment);
+        }
+        catch (InstantiationException e){
+            String comment = "Failed to access the given constructors";
+            printPersonalException(e,comment);
+        }
+        catch (InvocationTargetException e){
+            String comment = "While creating the object, the constructor threw a specific exception which was wrapped in an InvocationTargetException";
+            printPersonalException(e,comment);
+        }
+        catch (NoSuchMethodException e){
+            String comment = "Could not find constructor";
+            printPersonalException(e,comment);
         }
         throw new IllegalArgumentException("A class value was entered that was not specified in the configuration");
-    }// Ошибка на приватные констукторы
+    }
+    void printPersonalException(Exception e, String message){
+        System.out.println("Program comment of this exception:\n");
+        System.out.println(message);
+        System.out.println("Thrown exception text:\n");
+        System.out.println(e.getMessage());
+    }
 
 //
 //    public Map<Class, Object> SingletonInstance;
