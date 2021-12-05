@@ -8,14 +8,13 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-public class Example {
-
+public class OwnExample {
     private Container container;
 
     @Before
     public void setUp() {
         Environment env = new DummyEnvironment();
-        container = env.configure(new MyConfiguration());
+        container = env.configure(new MyOwnConfiguration());
     }
     @Test
     public void shouldInjectSingleton() {
@@ -42,5 +41,9 @@ public class Example {
     public void shouldBuildInjectDependencies() {
         final UseA hasADependency = container.getComponent(UseA.class);
         assertSame(hasADependency.getDependency(), container.getComponent(B.class));
+    }
+    @Test
+    public void ownTest1() {
+        container.getComponent(MyInjectFirst.class);
     }
 }

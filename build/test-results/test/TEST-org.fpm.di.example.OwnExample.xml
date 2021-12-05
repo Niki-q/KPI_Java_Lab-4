@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.fpm.di.example.OwnExample" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-12-05T21:06:36" hostname="DESKTOP-76DF0OB" time="0.013">
+  <properties/>
+  <testcase name="ownTest1" classname="org.fpm.di.example.OwnExample" time="0.013"/>
+  <system-out><![CDATA[org.fpm.di.example.MyInjectFirst@161ac34d
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
