@@ -15,5 +15,6 @@ public class MyOwnConfiguration implements Configuration {
         binder.bind(B.class, new B());
 
         binder.bind(MyInjectFirst.class);
+        binder.bind(MyInjectSecond.class);
     }
 }

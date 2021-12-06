@@ -1,5 +1,4 @@
-package org.fpm.di.example;
-import org.fpm.di.Container;
+package org.fpm.di;
 
 import javax.inject.Singleton;
 import javax.inject.Inject;
@@ -71,15 +70,15 @@ public class DummyContainer implements Container {
         List<T> instances = new LinkedList<>();
         for (Constructor<?> constructor : getConstructorsInject(ourclazz)){
             List<Object> arguments = new ArrayList<>();
-            for (int i = 0; i <= constructor.getParameterCount() - 1; i++) {
-                arguments.add(getComponent(constructor.getParameterTypes()[i]));
-            }
             try {
+                for (int i = 0; i <= constructor.getParameterCount() - 1; i++) {
+                    arguments.add(this.getComponent(constructor.getParameterTypes()[i]));
+                }
                 T instance = ourclazz.cast(
                         constructor.newInstance(arguments.toArray())
                 );
                 instances.add(instance);
-            }catch (InvocationTargetException | InstantiationException | IllegalAccessException ignored){}
+            }catch (InvocationTargetException | InstantiationException | IllegalAccessException | IllegalArgumentException ignored){}
         }
         if (instances.isEmpty())
             throw new InstantiationException("The @Inject annotation was specified in the annotation of the class constructors, but none of the constructors with this annotation contains the objects specified in the container configuration in ALL of its arguments");

@@ -1,13 +1,9 @@
-package org.fpm.di.example;
-
-import org.fpm.di.Binder;
-import org.fpm.di.Container;
+package org.fpm.di;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
 public class DummyBinder implements Binder {
-    private Container container;
     private HashMap<Class, Class> class_list;
     private HashMap<Class, Object> instance_list;
     @Override
@@ -30,7 +26,6 @@ public class DummyBinder implements Binder {
         this.instance_list.put(clazz,instance);
     }
     DummyBinder(Container container) {
-        this.container = container;
         Class <?> cls = container.getClass();
         Field class_list = cls.getDeclaredFields()[0];
         Field instance_list = cls.getDeclaredFields()[1];

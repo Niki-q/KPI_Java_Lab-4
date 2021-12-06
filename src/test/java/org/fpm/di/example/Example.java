@@ -1,6 +1,7 @@
 package org.fpm.di.example;
 
 import org.fpm.di.Container;
+import org.fpm.di.DummyEnvironment;
 import org.fpm.di.Environment;
 import org.junit.Before;
 import org.junit.Test;

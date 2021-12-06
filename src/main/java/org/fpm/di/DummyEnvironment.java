@@ -1,8 +1,4 @@
-package org.fpm.di.example;
-
-import org.fpm.di.Configuration;
-import org.fpm.di.Container;
-import org.fpm.di.Environment;
+package org.fpm.di;
 
 public class DummyEnvironment implements Environment {
 
