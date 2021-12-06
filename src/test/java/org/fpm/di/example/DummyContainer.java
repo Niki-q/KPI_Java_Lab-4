@@ -87,7 +87,7 @@ public class DummyContainer implements Container {
     }
 
     @Override
-    public <T> T getComponent(Class<T> clazz) {
+    synchronized public <T> T getComponent(Class<T> clazz) {
         if (isContainsClassList(clazz)) {
             Class<T> ourclazz = ClassList.get(clazz);
             if (isContainsInstanceList(ourclazz))
@@ -111,13 +111,3 @@ public class DummyContainer implements Container {
 
 }
 
-/**NoSuchMethodException - не удалось найти конструктор
- * InvocationTargetException - при создании обьекта конструктор вызвал определенное исключение, которое было обернуто в InvocationTargetException
- * InstantiationException - не удалось обратиться по заданным конструкторам
- * IllegalAccessException - не удаётся получиться доступ к конструктору класса, возможно у конструктора указан не публичный модификатор доступа
- * */
-
-
-/**От большого аргумента к меньшему потому что это покажет функционал программы в частности возможность перебирать любыми значениями аргументов
- *
- *  И не вызывать дефолтный конструктор так как пользователь фреймворка должен понимать свои действия и выбирать аннотации конструкторов в соответсвии с конфигурацией контейнера или наоборот */

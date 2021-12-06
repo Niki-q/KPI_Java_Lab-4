@@ -11,12 +11,12 @@ public class DummyBinder implements Binder {
     private HashMap<Class, Class> class_list;
     private HashMap<Class, Object> instance_list;
     @Override
-    public <T> void bind(Class<T> clazz) {
+    synchronized public <T> void bind(Class<T> clazz) {
         this.class_list.put(clazz,clazz);
     }
 
     @Override
-    public <T> void bind(Class<T> clazz, Class<? extends T> implementation) {
+    synchronized public <T> void bind(Class<T> clazz, Class<? extends T> implementation) {
         if (isContainsClassList(clazz)) {
             this.class_list.replace(clazz, clazz, implementation);
         }
@@ -26,7 +26,7 @@ public class DummyBinder implements Binder {
     }
 
     @Override
-    public <T> void bind(Class<T> clazz, T instance) {
+    synchronized public <T> void bind(Class<T> clazz, T instance) {
         this.instance_list.put(clazz,instance);
     }
     DummyBinder(Container container) {
@@ -43,7 +43,7 @@ public class DummyBinder implements Binder {
         catch (IllegalAccessException ignored) {
         }
     }
-    <T> boolean isContainsClassList(Class<T> clazz){
+    synchronized <T> boolean isContainsClassList(Class<T> clazz){
         return class_list.containsKey(clazz) || class_list.containsValue(clazz);
     }
 }
