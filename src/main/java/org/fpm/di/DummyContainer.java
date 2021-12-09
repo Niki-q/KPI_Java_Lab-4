@@ -7,8 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class DummyContainer implements Container {
-    public Map<Class, Class> ClassList;
-    public Map<Class, Object> InstanceList;
+    public final Map<Class, Class> ClassList;
+    public final Map<Class, Object> InstanceList;
 
     DummyContainer() {
         this.InstanceList = new HashMap<>();
@@ -24,7 +24,9 @@ public class DummyContainer implements Container {
     }
 
     <T> boolean isContainsInstanceList(Class<T> clazz) {
-        return InstanceList.containsKey(clazz);
+        synchronized (InstanceList) {
+            return InstanceList.containsKey(clazz);
+        }
     }
 
     <T> boolean isClassConstructorHaveAnnotationInject(Class<T> clazz) {
@@ -80,33 +82,35 @@ public class DummyContainer implements Container {
                 instances.add(instance);
             }catch (InvocationTargetException | InstantiationException | IllegalAccessException | IllegalArgumentException ignored){}
         }
-        if (instances.isEmpty())
+        if (instances.isEmpty()) {
             throw new InstantiationException("The @Inject annotation was specified in the annotation of the class constructors, but none of the constructors with this annotation contains the objects specified in the container configuration in ALL of its arguments");
+        }
         return instances.get(0);
     }
 
     @Override
-    synchronized public <T> T getComponent(Class<T> clazz) {
+    public <T> T getComponent(Class<T> clazz) {
         if (isContainsClassList(clazz)) {
             Class<T> ourclazz = ClassList.get(clazz);
-            if (isContainsInstanceList(ourclazz))
-                return (T) InstanceList.get(ourclazz);
-            try {
-                if (isSingleton(ourclazz)) {
-                    T instance = ourclazz.cast(ourclazz.getDeclaredConstructor().newInstance());
-                    InstanceList.put(ourclazz, instance);
-                    return instance;
+            synchronized (InstanceList){
+                if (isContainsInstanceList(ourclazz))
+                    return (T) InstanceList.get(ourclazz);
+                try {
+                    if (isSingleton(ourclazz)) {
+                        T instance = ourclazz.cast(ourclazz.getDeclaredConstructor().newInstance());
+                        InstanceList.put(ourclazz, instance);
+                        return instance;
+                    }
+                    if (isClassConstructorHaveAnnotationInject(ourclazz)) {
+                        return getInstanceOfInjectConstructor(ourclazz);
+                    }
+                    return ourclazz.cast(ourclazz.getDeclaredConstructor().newInstance());
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
                 }
-                if (isClassConstructorHaveAnnotationInject(ourclazz)) {
-                    return getInstanceOfInjectConstructor(ourclazz);
-                }
-                return ourclazz.cast(ourclazz.getDeclaredConstructor().newInstance());
-            } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
             }
         }
         throw new IllegalArgumentException("A class value was entered that was not specified in the configuration");
     }
-
 }
 

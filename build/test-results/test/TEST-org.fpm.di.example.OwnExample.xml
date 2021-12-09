@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.fpm.di.example.OwnExample" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-12-07T21:54:08" hostname="DESKTOP-76DF0OB" time="0.011">
+<testsuite name="org.fpm.di.example.OwnExample" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-12-09T14:47:04" hostname="DESKTOP-76DF0OB" time="0.008">
   <properties/>
-  <testcase name="ownTest1" classname="org.fpm.di.example.OwnExample" time="0.01"/>
+  <testcase name="ownTest1" classname="org.fpm.di.example.OwnExample" time="0.007"/>
   <testcase name="ownTest2" classname="org.fpm.di.example.OwnExample" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
