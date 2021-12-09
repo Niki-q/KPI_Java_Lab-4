@@ -4,8 +4,8 @@ public class DummyEnvironment implements Environment {
 
     @Override
     public Container configure(Configuration configuration){
-        Container container = new DummyContainer();
-        DummyBinder binder = new DummyBinder(container);
+        DummyContainer container = new DummyContainer();
+        DummyBinder binder = new DummyBinder(container.ClassList,container.InstanceList);
         configuration.configure(binder);
         return container;
     }

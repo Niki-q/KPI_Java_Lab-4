@@ -7,8 +7,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class DummyContainer implements Container {
-    private Map<Class, Class> ClassList;
-    private Map<Class, Object> InstanceList;
+    public Map<Class, Class> ClassList;
+    public Map<Class, Object> InstanceList;
 
     DummyContainer() {
         this.InstanceList = new HashMap<>();
