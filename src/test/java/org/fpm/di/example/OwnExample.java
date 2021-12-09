@@ -22,9 +22,9 @@ public class OwnExample {
     public void ownTest2() {
         container.getComponent(MyInjectSecond.class);
     }
-
-//    @Test(expected = InstantiationException.class)
-//    public void ownTest3() {
-//        container.getComponent(MyInjectThird.class);
-//    }
+    @Test(expected = RuntimeException.class)
+    public void ownTest3() {
+        container.getComponent(MyInjectThird.class);
+    }
 }
+

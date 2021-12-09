@@ -68,7 +68,7 @@ public class DummyContainer implements Container {
         return list;
     }
 
-    <T> T getInstanceOfInjectConstructor(Class<T> ourclazz) throws InstantiationException {
+    <T> T getInstanceOfInjectConstructor(Class<T> ourclazz){
         List<T> instances = new LinkedList<>();
         for (Constructor<?> constructor : getConstructorsInject(ourclazz)){
             List<Object> arguments = new ArrayList<>();
@@ -83,7 +83,7 @@ public class DummyContainer implements Container {
             }catch (InvocationTargetException | InstantiationException | IllegalAccessException | IllegalArgumentException ignored){}
         }
         if (instances.isEmpty()) {
-            throw new InstantiationException("The @Inject annotation was specified in the annotation of the class constructors, but none of the constructors with this annotation contains the objects specified in the container configuration in ALL of its arguments");
+            throw new RuntimeException("The @Inject annotation was specified in the annotation of the class constructors, but none of the constructors with this annotation contains the objects specified in the container configuration in ALL of its arguments");
         }
         return instances.get(0);
     }
