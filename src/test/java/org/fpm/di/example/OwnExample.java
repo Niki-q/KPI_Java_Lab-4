@@ -26,5 +26,10 @@ public class OwnExample {
     public void ownTest3() {
         container.getComponent(MyInjectThird.class);
     }
+
+    @Test
+    public void ownTest4() {
+        container.getComponent(MyInjectFourth.class);
+    }
 }
 

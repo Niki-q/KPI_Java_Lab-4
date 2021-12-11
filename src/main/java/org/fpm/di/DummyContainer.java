@@ -46,7 +46,7 @@ public class DummyContainer implements Container {
     }
 
     <T> List<Constructor<?>> getConstructorsInject(Class<T> clazz) {
-        List<Constructor<?>> list = new LinkedList<>();
+        List<Constructor<?>> list = new ArrayList<>();
         Constructor<?>[] constructors = clazz.getDeclaredConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.isAnnotationPresent(Inject.class)){
@@ -54,27 +54,12 @@ public class DummyContainer implements Container {
                 list.add(constructor);
             }
         }
-        if (list.size() > 1)
-            list = sortListOfConstructors(list);
-        return list;
-    }
-
-    <T> List<Constructor<?>> sortListOfConstructors(List<Constructor<?>> list) {
-        boolean isSorted = false;
-        while (!isSorted) {
-            isSorted = true;
-            for (int i = 0; i <= list.size() - 2; i++) {
-                if (list.get(i).getParameterCount() < list.get(i + 1).getParameterCount()) {
-                    isSorted = false;
-                    Constructor<?> buff = list.get(i);
-                    list.set(i, list.get(i + 1));
-                    list.set(i + 1, buff);
-                }
-            }
+        if (list.size() > 1) {
+            list.sort(Comparator.comparingInt(Constructor::getParameterCount));
+            Collections.reverse(list);
         }
         return list;
     }
-
     <T> T getInstanceOfInjectConstructor(Class<T> ourclazz){
         List<T> instances = new LinkedList<>();
         for (Constructor<?> constructor : getConstructorsInject(ourclazz)){
