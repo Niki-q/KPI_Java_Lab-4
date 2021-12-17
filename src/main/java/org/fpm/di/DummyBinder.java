@@ -3,8 +3,10 @@ package org.fpm.di;
 import java.util.Map;
 
 public class DummyBinder implements Binder {
+
     private final Map<Class, Class> class_list;
     private final Map<Class, Object> instance_list;
+
     @Override
     public <T> void bind(Class<T> clazz) {
         synchronized (class_list){
@@ -33,10 +35,12 @@ public class DummyBinder implements Binder {
                 this.bind(clazz);
         }
     }
+
     DummyBinder(Map<Class, Class> ClassList, Map<Class, Object> InstanceList) {
         this.class_list = ClassList;
         this.instance_list = InstanceList;
     }
+
     <T> boolean isContainsClassList(Class<T> clazz){
         synchronized (class_list) {
             return class_list.containsKey(clazz) || class_list.containsValue(clazz);

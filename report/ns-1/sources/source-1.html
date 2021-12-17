@@ -78,46 +78,50 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">3</i>&nbsp;import java.util.Map;
 <i class="no-highlight">4</i>&nbsp;
 <i class="no-highlight">5</i>&nbsp;public class DummyBinder implements Binder {
-<i class="no-highlight">6</i>&nbsp;    private final Map&lt;Class, Class&gt; class_list;
-<i class="no-highlight">7</i>&nbsp;    private final Map&lt;Class, Object&gt; instance_list;
-<i class="no-highlight">8</i>&nbsp;    @Override
-<i class="no-highlight">9</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz) {
-<b class="fc"><i class="no-highlight">10</i>&nbsp;        synchronized (class_list){</b>
-<b class="fc"><i class="no-highlight">11</i>&nbsp;            this.class_list.put(clazz,clazz);</b>
-<b class="fc"><i class="no-highlight">12</i>&nbsp;        }</b>
-<i class="no-highlight">13</i>&nbsp;    }
-<i class="no-highlight">14</i>&nbsp;
-<i class="no-highlight">15</i>&nbsp;    @Override
-<i class="no-highlight">16</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz, Class&lt;? extends T&gt; implementation) {
-<b class="fc"><i class="no-highlight">17</i>&nbsp;        synchronized (class_list) {</b>
-<b class="fc"><i class="no-highlight">18</i>&nbsp;            if (class_list.containsKey(clazz))</b>
-<b class="nc"><i class="no-highlight">19</i>&nbsp;                throw new IllegalArgumentException(&quot;In the configuration, this class has already been designated (this class has more than one relationship)&quot;);</b>
-<b class="fc"><i class="no-highlight">20</i>&nbsp;            if (isContainsClassList(clazz)) {</b>
-<b class="nc"><i class="no-highlight">21</i>&nbsp;                this.class_list.replace(clazz, clazz, implementation);</b>
-<i class="no-highlight">22</i>&nbsp;            } else
-<b class="fc"><i class="no-highlight">23</i>&nbsp;                this.class_list.put(clazz, implementation);</b>
-<b class="fc"><i class="no-highlight">24</i>&nbsp;        }</b>
-<b class="fc"><i class="no-highlight">25</i>&nbsp;        this.bind(implementation);</b>
-<i class="no-highlight">26</i>&nbsp;    }
-<i class="no-highlight">27</i>&nbsp;
-<i class="no-highlight">28</i>&nbsp;    @Override
-<i class="no-highlight">29</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz, T instance) {
-<b class="fc"><i class="no-highlight">30</i>&nbsp;        synchronized (instance_list) {</b>
-<b class="fc"><i class="no-highlight">31</i>&nbsp;            this.instance_list.put(clazz, instance);</b>
-<b class="fc"><i class="no-highlight">32</i>&nbsp;            if (!class_list.containsValue(clazz))</b>
-<b class="nc"><i class="no-highlight">33</i>&nbsp;                this.bind(clazz);</b>
-<b class="fc"><i class="no-highlight">34</i>&nbsp;        }</b>
-<i class="no-highlight">35</i>&nbsp;    }
-<b class="fc"><i class="no-highlight">36</i>&nbsp;    DummyBinder(Map&lt;Class, Class&gt; ClassList, Map&lt;Class, Object&gt; InstanceList) {</b>
-<b class="fc"><i class="no-highlight">37</i>&nbsp;        this.class_list = ClassList;</b>
-<b class="fc"><i class="no-highlight">38</i>&nbsp;        this.instance_list = InstanceList;</b>
-<i class="no-highlight">39</i>&nbsp;    }
-<i class="no-highlight">40</i>&nbsp;    &lt;T&gt; boolean isContainsClassList(Class&lt;T&gt; clazz){
-<b class="fc"><i class="no-highlight">41</i>&nbsp;        synchronized (class_list) {</b>
-<b class="fc"><i class="no-highlight">42</i>&nbsp;            return class_list.containsKey(clazz) || class_list.containsValue(clazz);</b>
-<b class="nc"><i class="no-highlight">43</i>&nbsp;        }</b>
-<i class="no-highlight">44</i>&nbsp;    }
-<i class="no-highlight">45</i>&nbsp;}
+<i class="no-highlight">6</i>&nbsp;
+<i class="no-highlight">7</i>&nbsp;    private final Map&lt;Class, Class&gt; class_list;
+<i class="no-highlight">8</i>&nbsp;    private final Map&lt;Class, Object&gt; instance_list;
+<i class="no-highlight">9</i>&nbsp;
+<i class="no-highlight">10</i>&nbsp;    @Override
+<i class="no-highlight">11</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz) {
+<b class="fc"><i class="no-highlight">12</i>&nbsp;        synchronized (class_list){</b>
+<b class="fc"><i class="no-highlight">13</i>&nbsp;            this.class_list.put(clazz,clazz);</b>
+<b class="fc"><i class="no-highlight">14</i>&nbsp;        }</b>
+<i class="no-highlight">15</i>&nbsp;    }
+<i class="no-highlight">16</i>&nbsp;
+<i class="no-highlight">17</i>&nbsp;    @Override
+<i class="no-highlight">18</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz, Class&lt;? extends T&gt; implementation) {
+<b class="fc"><i class="no-highlight">19</i>&nbsp;        synchronized (class_list) {</b>
+<b class="fc"><i class="no-highlight">20</i>&nbsp;            if (class_list.containsKey(clazz))</b>
+<b class="nc"><i class="no-highlight">21</i>&nbsp;                throw new IllegalArgumentException(&quot;In the configuration, this class has already been designated (this class has more than one relationship)&quot;);</b>
+<b class="fc"><i class="no-highlight">22</i>&nbsp;            if (isContainsClassList(clazz)) {</b>
+<b class="nc"><i class="no-highlight">23</i>&nbsp;                this.class_list.replace(clazz, clazz, implementation);</b>
+<i class="no-highlight">24</i>&nbsp;            } else
+<b class="fc"><i class="no-highlight">25</i>&nbsp;                this.class_list.put(clazz, implementation);</b>
+<b class="fc"><i class="no-highlight">26</i>&nbsp;        }</b>
+<b class="fc"><i class="no-highlight">27</i>&nbsp;        this.bind(implementation);</b>
+<i class="no-highlight">28</i>&nbsp;    }
+<i class="no-highlight">29</i>&nbsp;
+<i class="no-highlight">30</i>&nbsp;    @Override
+<i class="no-highlight">31</i>&nbsp;    public &lt;T&gt; void bind(Class&lt;T&gt; clazz, T instance) {
+<b class="fc"><i class="no-highlight">32</i>&nbsp;        synchronized (instance_list) {</b>
+<b class="fc"><i class="no-highlight">33</i>&nbsp;            this.instance_list.put(clazz, instance);</b>
+<b class="fc"><i class="no-highlight">34</i>&nbsp;            if (!class_list.containsValue(clazz))</b>
+<b class="nc"><i class="no-highlight">35</i>&nbsp;                this.bind(clazz);</b>
+<b class="fc"><i class="no-highlight">36</i>&nbsp;        }</b>
+<i class="no-highlight">37</i>&nbsp;    }
+<i class="no-highlight">38</i>&nbsp;
+<b class="fc"><i class="no-highlight">39</i>&nbsp;    DummyBinder(Map&lt;Class, Class&gt; ClassList, Map&lt;Class, Object&gt; InstanceList) {</b>
+<b class="fc"><i class="no-highlight">40</i>&nbsp;        this.class_list = ClassList;</b>
+<b class="fc"><i class="no-highlight">41</i>&nbsp;        this.instance_list = InstanceList;</b>
+<i class="no-highlight">42</i>&nbsp;    }
+<i class="no-highlight">43</i>&nbsp;
+<i class="no-highlight">44</i>&nbsp;    &lt;T&gt; boolean isContainsClassList(Class&lt;T&gt; clazz){
+<b class="fc"><i class="no-highlight">45</i>&nbsp;        synchronized (class_list) {</b>
+<b class="fc"><i class="no-highlight">46</i>&nbsp;            return class_list.containsKey(clazz) || class_list.containsValue(clazz);</b>
+<b class="nc"><i class="no-highlight">47</i>&nbsp;        }</b>
+<i class="no-highlight">48</i>&nbsp;    }
+<i class="no-highlight">49</i>&nbsp;}
 </div>
 </pre>
 </div>
@@ -144,7 +148,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-12-09 16:52</div>
+    <div style="float:right;">generated on 2021-12-17 08:22</div>
 </div>
 </body>
 </html>

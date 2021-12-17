@@ -80,7 +80,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 <i class="no-highlight">5</i>&nbsp;    @Override
 <i class="no-highlight">6</i>&nbsp;    public Container configure(Configuration configuration){
 <b class="fc"><i class="no-highlight">7</i>&nbsp;        DummyContainer container = new DummyContainer();</b>
-<b class="fc"><i class="no-highlight">8</i>&nbsp;        DummyBinder binder = new DummyBinder(container.ClassList,container.InstanceList);</b>
+<b class="fc"><i class="no-highlight">8</i>&nbsp;        DummyBinder binder = new DummyBinder(container.getClassList(),container.getInstanceList());</b>
 <b class="fc"><i class="no-highlight">9</i>&nbsp;        configuration.configure(binder);</b>
 <b class="fc"><i class="no-highlight">10</i>&nbsp;        return container;</b>
 <i class="no-highlight">11</i>&nbsp;    }
@@ -111,7 +111,7 @@ Current scope:     <a href="../../index.html">all classes</a>
 
 <div class="footer">
     
-    <div style="float:right;">generated on 2021-12-09 16:52</div>
+    <div style="float:right;">generated on 2021-12-17 08:22</div>
 </div>
 </body>
 </html>
